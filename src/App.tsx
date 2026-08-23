@@ -24,7 +24,36 @@ export const App: React.FC = () => {
 
   const currentTrack: Track = playlist.tracks[currentTrackIndex] || playlist.tracks[0];
 
-  // Initialize HTML5 audio element
+  // ─── Disable right-click globally (basic frontend protection) ───
+  useEffect(() => {
+    const handleContextMenu = (e: MouseEvent) => {
+      e.preventDefault();
+      return false;
+    };
+
+    // Block common keyboard shortcuts for viewing source / dev tools
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ctrl+U (view source), Ctrl+S (save), Ctrl+Shift+I (devtools), F12
+      if (
+        (e.ctrlKey && e.key === 'u') ||
+        (e.ctrlKey && e.key === 's') ||
+        e.key === 'F12'
+      ) {
+        e.preventDefault();
+        return false;
+      }
+    };
+
+    document.addEventListener('contextmenu', handleContextMenu);
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('contextmenu', handleContextMenu);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  // ─── Initialize HTML5 audio element ───
   useEffect(() => {
     const audio = new Audio();
     audio.crossOrigin = 'anonymous';
@@ -58,7 +87,7 @@ export const App: React.FC = () => {
     };
   }, []);
 
-  // Update audio source when track changes
+  // ─── Update audio source when track changes ───
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -72,7 +101,6 @@ export const App: React.FC = () => {
 
       if (isPlaying) {
         audio.play().catch(() => {
-          // If media play fails (e.g. autoplay restriction/CORS), start ambient audio synth fallback
           startAmbientSynth();
         });
       }
@@ -81,7 +109,7 @@ export const App: React.FC = () => {
     }
   }, [currentTrackIndex, playlist]);
 
-  // Sync play/pause state with audio element & volume
+  // ─── Sync play/pause state with audio element & volume ───
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -102,7 +130,7 @@ export const App: React.FC = () => {
     }
   }, [isPlaying, volume]);
 
-  // Web Audio API ambient drone fallback if media stream blocked
+  // ─── Web Audio API ambient drone fallback ───
   const startAmbientSynth = () => {
     try {
       if (!audioCtxRef.current) {
@@ -199,17 +227,42 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#0b090a] text-amber-50 font-sans-ui overflow-hidden flex flex-col justify-between select-none">
-      {/* Native Full-Screen Muted Background Video at 100% Original Sharp HD Quality */}
+    <div
+      className="relative min-h-screen h-screen bg-[#0b090a] text-amber-50 font-sans-ui overflow-hidden flex flex-col select-none"
+      onDragStart={(e) => e.preventDefault()}
+    >
+      {/* Full-Screen Cinematic Background Video */}
       <BackgroundVideo />
 
       {/* Minimal Top Controls Header */}
       <Header onOpenSettings={() => setIsSettingsOpen(true)} />
 
-      {/* Main Unobstructed Video Center */}
-      <main className="relative z-10 flex-1 pointer-events-none" />
+      {/* ─── Hero Branding: Positioned lower-left to avoid covering the couple ─── */}
+      <main className="relative z-10 flex-1 flex items-end pointer-events-none">
+        <div className="px-5 sm:px-8 pb-24 sm:pb-28 md:pb-32">
+          {/* THAALAM Title */}
+          <h1
+            className="font-serif-cinzel text-3xl sm:text-4xl md:text-5xl font-semibold tracking-[0.2em] text-amber-100/90 animate-hero-fade-in"
+            style={{
+              textShadow: '0 2px 20px rgba(0,0,0,0.7), 0 0 40px rgba(0,0,0,0.4)',
+            }}
+          >
+            THAALAM
+          </h1>
 
-      {/* Compact Bottom Music Player (80-110px desktop, glass ONLY on player) */}
+          {/* Tagline */}
+          <p
+            className="font-cormorant italic text-sm sm:text-base md:text-lg text-amber-200/50 tracking-[0.15em] mt-2 sm:mt-3 animate-hero-tagline animate-breathe"
+            style={{
+              textShadow: '0 1px 12px rgba(0,0,0,0.6)',
+            }}
+          >
+            One South. Many Languages. One Rhythm.
+          </p>
+        </div>
+      </main>
+
+      {/* Compact Bottom Music Player */}
       <MusicPlayer
         currentTrack={currentTrack}
         isPlaying={isPlaying}
@@ -248,5 +301,3 @@ export const App: React.FC = () => {
 };
 
 export default App;
-
-
