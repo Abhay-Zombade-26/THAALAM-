@@ -6,8 +6,7 @@ import {
   SkipForward,
   Volume2,
   VolumeX,
-  ListMusic,
-  Disc3
+  ListMusic
 } from 'lucide-react';
 import type { Track } from '../types/music';
 import { ProgressBar } from './ProgressBar';
@@ -56,123 +55,118 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
   };
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 sm:bottom-6 sm:left-1/2 sm:-translate-x-1/2 sm:w-full sm:max-w-5xl z-40 pointer-events-auto select-none">
-      {/* Compact Floating Glass Container (80-100px height on desktop) */}
-      <div className="relative bg-[#120e10]/80 backdrop-blur-xl border border-amber-500/20 rounded-2xl p-3 sm:px-5 sm:py-3 shadow-[0_15px_40px_rgba(0,0,0,0.85)] flex flex-col gap-1.5 transition-all">
+    <div className="fixed bottom-3 left-4 right-4 sm:bottom-5 sm:left-1/2 sm:-translate-x-1/2 sm:w-full sm:max-w-[640px] z-40 pointer-events-auto select-none">
+      {/* Compact Glassmorphism Floating Pill */}
+      <div className="relative bg-black/30 backdrop-blur-lg border border-white/[0.08] rounded-2xl px-3 py-1.5 sm:px-4 sm:py-2 shadow-[0_8px_32px_rgba(0,0,0,0.5)] flex flex-col gap-0.5 transition-all">
         
-        {/* Subtle Gold Glow Top Line */}
-        <div className="absolute top-0 left-8 right-8 h-[1px] bg-gradient-to-r from-transparent via-amber-400/40 to-transparent" />
+        {/* Subtle Top Glow Line */}
+        <div className="absolute top-0 left-12 right-12 h-[1px] bg-gradient-to-r from-transparent via-amber-400/20 to-transparent" />
 
-        {/* Main Controls Row: Album | Track Meta | Previous | Play/Pause | Next | Volume | Queue */}
-        <div className="flex items-center justify-between gap-3 min-h-[44px]">
+        {/* Single Row: Art | Meta | Controls | Volume | Queue */}
+        <div className="flex items-center gap-2 sm:gap-3">
           
-          {/* Left: Album Art + Track Info */}
-          <div className="flex items-center gap-3 min-w-0 sm:w-1/3">
-            {/* Album Art Thumbnail */}
-            <div className="relative w-11 h-11 rounded-lg overflow-hidden shrink-0 border border-amber-500/30 shadow-md group">
-              <img
-                src={currentTrack.albumArt}
-                alt={currentTrack.title}
-                className={`w-full h-full object-cover transition-transform duration-700 ${isPlaying ? 'scale-105' : ''}`}
-              />
-              <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                <Disc3 className={`w-5 h-5 text-amber-300 ${isPlaying ? 'animate-spin-slow text-amber-400' : 'opacity-70'}`} />
-              </div>
-            </div>
-
-            {/* Song Title & Artist */}
-            <div className="min-w-0 flex flex-col justify-center">
-              <h3 className="text-xs sm:text-sm font-semibold font-sans-ui text-amber-100 truncate tracking-wide">
-                {currentTrack.title}
-              </h3>
-              <p className="text-[11px] text-amber-300/70 truncate font-sans-ui">
-                {currentTrack.artist}
-              </p>
-            </div>
+          {/* Rotating Circular Vinyl Artwork */}
+          <div className="relative w-8 h-8 rounded-full overflow-hidden shrink-0 border border-amber-400/30 shadow-sm">
+            <img
+              src={currentTrack.albumArt}
+              alt={currentTrack.title}
+              className={`w-full h-full object-cover rounded-full ${isPlaying ? 'animate-spin-slow' : ''}`}
+              style={{ animationPlayState: isPlaying ? 'running' : 'paused' }}
+              draggable={false}
+            />
+            {/* Vinyl Spindle Dot */}
+            <div className="absolute inset-0 m-auto w-1.5 h-1.5 rounded-full bg-amber-950/90 border border-amber-400/40" />
           </div>
 
-          {/* Center: Previous | Play/Pause | Next */}
-          <div className="flex items-center justify-center gap-2 sm:gap-3">
+          {/* Song Title & Artist */}
+          <div className="min-w-0 flex flex-col justify-center sm:max-w-[160px]">
+            <h3 className="text-[11px] sm:text-xs font-semibold font-sans-ui text-amber-100/90 truncate tracking-wide leading-tight">
+              {currentTrack.title}
+            </h3>
+            <p className="text-[9px] sm:text-[10px] text-amber-300/50 truncate font-sans-ui leading-tight">
+              {currentTrack.artist}
+            </p>
+          </div>
+
+          {/* Playback Controls */}
+          <div className="flex items-center justify-center gap-1 sm:gap-1.5 shrink-0 ml-auto sm:ml-0">
             <button
               onClick={onPrevious}
-              className="p-1.5 rounded-full text-amber-200/80 hover:text-amber-100 hover:bg-amber-500/10 transition-all active:scale-90"
+              className="p-0.5 rounded-full text-amber-200/60 hover:text-amber-100 transition-all active:scale-90"
               title="Previous Track"
               aria-label="Previous track"
             >
-              <SkipBack className="w-4 h-4 sm:w-5 sm:h-5" />
+              <SkipBack className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
             </button>
 
             <button
               onClick={onPlayPause}
-              className="w-10 h-10 rounded-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-amber-950 flex items-center justify-center shadow-[0_0_20px_rgba(245,158,11,0.5)] hover:shadow-[0_0_25px_rgba(245,158,11,0.7)] transform hover:scale-105 active:scale-95 transition-all"
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-amber-950 flex items-center justify-center shadow-[0_0_12px_rgba(245,158,11,0.35)] transform hover:scale-105 active:scale-95 transition-all"
               title={isPlaying ? 'Pause' : 'Play'}
               aria-label={isPlaying ? 'Pause' : 'Play'}
             >
               {isPlaying ? (
-                <Pause className="w-5 h-5 fill-amber-950" />
+                <Pause className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-amber-950" />
               ) : (
-                <Play className="w-5 h-5 fill-amber-950 translate-x-0.5" />
+                <Play className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-amber-950 translate-x-[1px]" />
               )}
             </button>
 
             <button
               onClick={onNext}
-              className="p-1.5 rounded-full text-amber-200/80 hover:text-amber-100 hover:bg-amber-500/10 transition-all active:scale-90"
+              className="p-0.5 rounded-full text-amber-200/60 hover:text-amber-100 transition-all active:scale-90"
               title="Next Track"
               aria-label="Next track"
             >
-              <SkipForward className="w-4 h-4 sm:w-5 sm:h-5" />
+              <SkipForward className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
             </button>
           </div>
 
-          {/* Right: Volume Slider & Queue Toggle */}
-          <div className="flex items-center justify-end gap-2 sm:gap-3 sm:w-1/3">
-            {/* Volume Control */}
-            <div className="hidden md:flex items-center gap-1.5">
-              <button
-                onClick={toggleMute}
-                className="p-1 text-amber-300/70 hover:text-amber-100 transition-colors"
-                aria-label="Mute/Unmute"
-                title={isMuted ? "Unmute" : "Mute"}
-              >
-                {isMuted || volume === 0 ? (
-                  <VolumeX className="w-4 h-4 text-red-400" />
-                ) : (
-                  <Volume2 className="w-4 h-4 text-amber-400" />
-                )}
-              </button>
-              <input
-                type="range"
-                min="0"
-                max="1"
-                step="0.01"
-                value={isMuted ? 0 : volume}
-                onChange={(e) => {
-                  setIsMuted(false);
-                  onVolumeChange(parseFloat(e.target.value));
-                }}
-                className="w-16 sm:w-20 h-1 bg-amber-950/60 rounded-lg appearance-none cursor-pointer accent-amber-400"
-              />
-            </div>
-
-            {/* Queue Toggle Button */}
+          {/* Volume (desktop only) */}
+          <div className="hidden sm:flex items-center gap-1 shrink-0">
             <button
-              onClick={onToggleQueue}
-              className={`p-2 rounded-lg border transition-all flex items-center justify-center ${
-                isQueueOpen
-                  ? 'bg-amber-500/30 text-amber-100 border-amber-400/50 shadow-md'
-                  : 'bg-black/30 text-amber-300/80 hover:text-amber-100 hover:bg-amber-500/10 border-amber-500/20'
-              }`}
-              title="Playlist Queue"
-              aria-label="Toggle playlist queue"
+              onClick={toggleMute}
+              className="p-0.5 text-amber-300/50 hover:text-amber-100 transition-colors"
+              aria-label="Mute/Unmute"
+              title={isMuted ? "Unmute" : "Mute"}
             >
-              <ListMusic className="w-4 h-4 text-amber-300" />
+              {isMuted || volume === 0 ? (
+                <VolumeX className="w-3 h-3 text-red-400/70" />
+              ) : (
+                <Volume2 className="w-3 h-3 text-amber-400/70" />
+              )}
             </button>
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={isMuted ? 0 : volume}
+              onChange={(e) => {
+                setIsMuted(false);
+                onVolumeChange(parseFloat(e.target.value));
+              }}
+              className="w-12 sm:w-14"
+            />
           </div>
+
+          {/* Queue Toggle */}
+          <button
+            onClick={onToggleQueue}
+            className={`p-1 sm:p-1.5 rounded-full border transition-all flex items-center justify-center shrink-0 ${
+              isQueueOpen
+                ? 'bg-amber-500/25 text-amber-100 border-amber-400/40'
+                : 'bg-transparent text-amber-300/50 hover:text-amber-100 border-white/[0.06] hover:border-amber-500/20'
+            }`}
+            title="Playlist Queue"
+            aria-label="Toggle playlist queue"
+          >
+            <ListMusic className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+          </button>
         </div>
 
-        {/* Progress / Seek Bar Row */}
-        <div className="pt-0.5">
+        {/* Inline Seek Progress Bar */}
+        <div className="px-0.5">
           <ProgressBar
             currentTime={currentTime}
             duration={duration}
@@ -183,4 +177,3 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
     </div>
   );
 };
-
