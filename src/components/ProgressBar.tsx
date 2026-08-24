@@ -31,23 +31,27 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   const percentage = duration > 0 ? (currentTime / duration) * 100 : 0;
 
   return (
-    <div className="flex items-center gap-2 w-full font-sans-ui text-amber-300/40 select-none">
-      <span className="w-8 text-right font-mono text-[9px] sm:text-[10px]">
+    <div className="flex items-center gap-2.5 w-full font-sans-ui select-none">
+      <span className="w-8 text-right font-mono text-[10px] sm:text-[11px] text-amber-400/60 tabular-nums">
         {formatTime(currentTime)}
       </span>
 
       <div
         ref={barRef}
         onClick={handleSeek}
-        className="relative flex-1 h-1 hover:h-1.5 bg-white/[0.08] rounded-full cursor-pointer overflow-hidden transition-all group"
+        className="relative flex-1 h-1 hover:h-1.5 rounded-full cursor-pointer overflow-hidden transition-all group"
+        style={{ background: 'rgba(120, 53, 15, 0.35)' }}
       >
         <div
-          className="h-full bg-gradient-to-r from-amber-600/80 via-amber-400/90 to-amber-300/80 rounded-full relative group-hover:shadow-[0_0_8px_rgba(245,158,11,0.6)]"
-          style={{ width: `${percentage}%` }}
+          className="h-full rounded-full relative transition-shadow group-hover:shadow-[0_0_8px_rgba(245,158,11,0.6)]"
+          style={{
+            width: `${percentage}%`,
+            background: 'linear-gradient(90deg, #d97706 0%, #f59e0b 100%)',
+          }}
         />
       </div>
 
-      <span className="w-8 text-left font-mono text-[9px] sm:text-[10px]">
+      <span className="w-8 text-left font-mono text-[10px] sm:text-[11px] text-amber-400/60 tabular-nums">
         {formatTime(duration)}
       </span>
     </div>
