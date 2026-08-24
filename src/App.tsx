@@ -237,28 +237,43 @@ export const App: React.FC = () => {
       {/* Minimal Top Controls Header */}
       <Header onOpenSettings={() => setIsSettingsOpen(true)} />
 
-      {/* ─── Hero Branding: Positioned lower-left to avoid covering the couple ─── */}
+      {/* ─── Lower-Left Tagline: NO duplicate THAALAM, tagline only ─── */}
       <main className="relative z-10 flex-1 flex items-end pointer-events-none">
-        <div className="px-5 sm:px-8 pb-24 sm:pb-28 md:pb-32">
-          {/* THAALAM Title */}
-          <h1
-            className="font-serif-cinzel text-3xl sm:text-4xl md:text-5xl font-semibold tracking-[0.2em] text-amber-100/90 animate-hero-fade-in"
-            style={{
-              textShadow: '0 2px 20px rgba(0,0,0,0.7), 0 0 40px rgba(0,0,0,0.4)',
-            }}
-          >
-            THAALAM
-          </h1>
+        <div className="pl-8 sm:pl-12 md:pl-14 pb-28 sm:pb-32 md:pb-36">
+          {/* Tagline — Two elegant lines, second line centered */}
+          <div className="animate-hero-fade-in">
+            <p
+              className="font-serif-cinzel text-lg sm:text-xl md:text-2xl font-normal tracking-[0.04em] text-amber-50/90 leading-[1.25]"
+              style={{
+                textShadow: '0 2px 16px rgba(0,0,0,0.7), 0 0 30px rgba(0,0,0,0.3)',
+              }}
+            >
+              One South. Many Languages.
+            </p>
+            <p
+              className="font-serif-cinzel text-lg sm:text-xl md:text-2xl font-normal tracking-[0.04em] text-amber-50/90 leading-[1.25] mt-1 text-center"
+              style={{
+                textShadow: '0 2px 16px rgba(0,0,0,0.7), 0 0 30px rgba(0,0,0,0.3)',
+                maxWidth: '340px',
+              }}
+            >
+              One Rhythm.
+            </p>
+          </div>
 
-          {/* Tagline */}
-          <p
-            className="font-cormorant italic text-sm sm:text-base md:text-lg text-amber-200/50 tracking-[0.15em] mt-2 sm:mt-3 animate-hero-tagline animate-breathe"
-            style={{
-              textShadow: '0 1px 12px rgba(0,0,0,0.6)',
-            }}
-          >
-            One South. Many Languages. One Rhythm.
-          </p>
+          {/* Decorative Classical Ornament Line */}
+          <div className="mt-3 sm:mt-4 flex items-center gap-2.5 animate-hero-tagline max-w-[220px] sm:max-w-[280px]">
+            <div className="flex-1 h-[1px] bg-gradient-to-r from-amber-500/35 to-transparent" />
+            <svg
+              className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500/45 shrink-0"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path d="M12 2l1.09 3.26L16 6l-2.18 1.74L14.54 11 12 9.27 9.46 11l.72-3.26L8 6l2.91-.74L12 2z" />
+            </svg>
+            <div className="flex-1 h-[1px] bg-gradient-to-l from-amber-500/35 to-transparent" />
+          </div>
         </div>
       </main>
 
