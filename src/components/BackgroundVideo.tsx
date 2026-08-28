@@ -46,16 +46,13 @@ export const BackgroundVideo: React.FC = () => {
         tabIndex={-1}
         controlsList="nodownload nofullscreen noremoteplayback"
         disablePictureInPicture
-        onContextMenu={(e) => e.preventDefault()}
       >
         <source src="/Couple_talking_for_looping_video.mp4" type="video/mp4" />
       </video>
 
-      {/* Transparent shield overlay — blocks right-click / drag on video */}
+      {/* Transparent shield overlay */}
       <div
-        className="video-shield"
-        onContextMenu={(e) => e.preventDefault()}
-        onDragStart={(e) => e.preventDefault()}
+        className="video-shield pointer-events-none"
         aria-hidden="true"
       />
 
