@@ -1,0 +1,24 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Website Configuration
+    // Public can read website settings (default playlist, tagline, spotify URL)
+    // Only authenticated admin can write / update settings
+    match /settings/website {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Admin collection (if used for role checks)
+    match /admins/{adminId} {
+      allow read, write: if request.auth != null && request.auth.uid == adminId;
+    }
+
+    // Default catch-all: deny all other writes unless authenticated
+    match /{document=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+  }
+}

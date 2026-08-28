@@ -1,0 +1,15 @@
+{
+  "rules": {
+    "presence": {
+      ".read": true,
+      "$connectionId": {
+        ".write": true,
+        ".validate": "newData.hasChildren(['joinedAt', 'lastActive']) || !newData.exists()"
+      }
+    },
+    "$other": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    }
+  }
+}
