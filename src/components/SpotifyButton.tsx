@@ -1,6 +1,10 @@
 import React from 'react';
 
-export const SpotifyButton: React.FC = () => {
+interface SpotifyButtonProps {
+  spotifyUrl?: string;
+}
+
+export const SpotifyButton: React.FC<SpotifyButtonProps> = ({ spotifyUrl = 'https://open.spotify.com' }) => {
   return (
     <button
       className="w-10 h-10 sm:w-11 sm:h-11 rounded-full flex items-center justify-center transition-all active:scale-95 hover:brightness-125"
@@ -14,7 +18,7 @@ export const SpotifyButton: React.FC = () => {
       aria-label="Spotify integration"
       title="Spotify Sync"
       onClick={() => {
-        window.open('https://open.spotify.com', '_blank', 'noopener,noreferrer');
+        window.open(spotifyUrl || 'https://open.spotify.com', '_blank', 'noopener,noreferrer');
       }}
     >
       <svg className="w-4 h-4 fill-emerald-400" viewBox="0 0 24 24">
